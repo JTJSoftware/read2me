@@ -1,0 +1,174 @@
+<?xml version="1.0"?>
+
+<!--
+#
+# ***** BEGIN LICENSE BLOCK *****
+# Version: MPL 1.1/GPL 2.0/LGPL 2.1
+#
+# The contents of this file are subject to the Mozilla Public License Version
+# 1.1 (the "License"); you may not use this file except in compliance with
+# the License. You may obtain a copy of the License at
+# http://www.mozilla.org/MPL/
+#
+# Software distributed under the License is distributed on an "AS IS" basis,
+# WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+# for the specific language governing rights and limitations under the
+# License.
+#
+# The Original Code is Jim Massey - Kiosk Project code.
+#
+# Portions created by the Initial Developer are Copyright (C) 2009
+# the Initial Developer. All Rights Reserved.
+#
+# Contributor(s):
+#
+# Alternatively, the contents of this file may be used under the terms of
+# either of the GNU General Public License Version 2 or later (the "GPL"),
+# or the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+# in which case the provisions of the GPL or the LGPL are applicable instead
+# of those above. If you wish to allow use of your version of this file only
+# under the terms of either the GPL or the LGPL, and not to allow others to
+# use your version of this file under the terms of the MPL, indicate your
+# decision by deleting the provisions above and replace them with the notice
+# and other provisions required by the GPL or the LGPL. If you do not delete
+# the provisions above, a recipient may use your version of this file under
+# the terms of any one of the MPL, the GPL or the LGPL.
+#
+# ***** END LICENSE BLOCK *****
+-->
+
+<bindings id="xarrowscrollboxBindings"
+   xmlns="http://www.mozilla.org/xbl"
+   xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+   xmlns:xbl="http://www.mozilla.org/xbl">
+
+  <binding id="xscrollbox-base">
+    <resources>
+      <stylesheet src="chrome://read2me/content/xscrollbox/xscrollbox.css"/>
+    </resources>
+  </binding>
+
+  <binding id="scrollbox" extends="chrome://read2me/content/xscrollbox/xscrollbox.xml#xscrollbox-base">
+    <content>
+      <xul:box class="box-inherit scrollbox-innerbox" xbl:inherits="orient,align,pack,dir">
+        <children/>
+      </xul:box>
+    </content>
+  </binding>
+
+  <binding id="arrowscrollbox" extends="chrome://read2me/content/xscrollbox/xscrollbox.xml#xscrollbox-base" lines="2" linescount="0">
+    <content>
+      <xul:xrepeatbutton
+           class="xautorepeatbutton-up"
+           scrolldir="up" collapsed="true"
+           oncommand="this.parentNode.scrollByIndex(-1); 
+                      event.preventBubble();"/>
+      <xul:scrollbox xbl:inherits="orient,align,pack,dir" flex="1">
+        <children/>
+      </xul:scrollbox>
+     <xul:xrepeatbutton
+           class="xautorepeatbutton-down"
+           scrolldir="down"
+           collapsed="true"
+           oncommand="this.parentNode.scrollByIndex(1); 
+                      event.preventBubble();"/>
+    </content>
+
+    <implementation>
+       <method name="scrollByIndex">
+         <parameter name="lines"/>
+         <body><![CDATA[
+	// alert("Completed Implementation");
+           if (!("mScrollBoxObject" in this)) {
+             var kids = document.getAnonymousNodes(this);
+             this.mScrollBoxObject = kids[1].boxObject.QueryInterface(Components.interfaces.nsIScrollBoxObject);
+	     //alert("This is: " + kids[1]);
+	     var eddie = kids[1].boxObject.scrollBy;	
+	     var j=0;
+	     dump("**" + lines + " -AAAAAdump NEW---**" + eddie + "\n");
+	      for (var list in eddie) {
+	        ++j;
+		 dump(list + "*ENUM*" + j + "\n");
+		 }
+	
+           }
+ 
+           //this.mScrollBoxObject.scrollByIndex(lines);
+           this.mScrollBoxObject.scrollByIndex(lines);
+	   //alert("Completed Implementation");
+         ]]></body>
+       </method>            
+    </implementation>    
+    
+    <handlers>
+      <handler event="underflow"><![CDATA[
+       //alert("UnderFlow");
+        var kids = document.getAnonymousNodes(this);
+        var showLines = this.getAttribute("lines");
+        var countLines = this.getAttribute("linescount");  
+       dump("Event Fired from UnderFlow: " + window.outerHeight  + " \n");
+        countLines ++;
+        this.setAttribute("linescount", countLines);
+        if (countLines > showLines) {
+         kids[0].collapsed = true;
+         kids[2].collapsed = true;
+         //window.resizeBy(0,40);
+         dump("*** Show buttons ***\n");
+        } else {
+         kids[0].collapsed = true;
+         kids[2].collapsed = true;
+        //count ++;
+        }
+        event.preventBubble();
+      ]]></handler>
+
+      <handler event="overflow"><![CDATA[
+        var kids = document.getAnonymousNodes(this);
+        kids[0].collapsed = false;
+        kids[2].collapsed = false;
+        event.preventBubble();
+      ]]></handler>
+    </handlers>
+  </binding>
+
+  <binding id="xrepeatbutton" flex="1" display="xul:button" extends="xscrollbox.xml#xscrollbox-base">
+    <content>
+      <xul:image class="xrepeatbutton-icon"/>
+    </content>
+    
+    <handlers>
+      <handler event="command">
+      <![CDATA[
+        if (!("mScrollBox" in this)) {
+          //var kids = document.getAnonymousNodes(this.parentNode);
+          var kids = document.getAnonymousNodes(parentNode);
+          this.mScrollBox = kids[1];
+	  dump("** inside mScrollbox conditional ** " + kids[1] + "\n");
+        }
+        
+        var dir = this.getAttribute("scrolldir");
+	var bx = Components.classes["@mozilla.org/layout/xul-boxobject-scrollbox;1"].createInstance();
+        var bx = bx.QueryInterface(Components.interfaces.nsIScrollBoxObject);
+       try {	
+          //kids[1].BoxObject.scrollBy;
+	} catch (e) {
+	  //alert("Caught error: " + e);
+	}
+	//bx.scrollBy(dir == "down" ? -.5 : .5);
+	//alert("*** Inside autoscroll dir: " + dir + " ***");
+
+	var eddie = kids[1].nodeName;
+	//var eddie = bx;	
+	 var j=0;
+	dump("** " + dir + " -xscrollbtn Pressed** " + eddie + "\n");
+ for (var list in eddie) {
+   ++j;
+   dump(list + "*btn press ENUM*" + j + "\n");
+ }
+	
+      ]]>
+      </handler>
+    </handlers>
+  </binding>
+
+</bindings>

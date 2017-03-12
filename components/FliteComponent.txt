@@ -1,0 +1,52 @@
+The Flite component is built with flite-1.3.5-current supplied by Allen Black
+Flite xpcom component is developed by Jim Massey - massey@stlouis-shopper.com 
+
+Flite component features:
+
+flite-1.3.5-current is embedded in the libxpcomFlite.so component. There are 
+some moddifications to the version of flite to make it compile in the mozilla 
+framework and c++. I use the firefox build system to build the component, 
+adding xpcom/Flite to the firefox build since I intend to release a ff3.x 
+based kiosk browser with this incorporated(see kiosk.mozdev.org).
+
+Currently only compiled for linux,tested on fc7 fc8, fc10 using ff3.x 
+A windows build should be possible since flite should build there.
+
+Four built-in Voices:
+- kal  u.s. male
+- slt  u.s female
+- awb  u.s male
+- rms  u.s male
+
+It is best to use the Flite component from a seperate thread(ff3.x) because 
+flite will block until it returns, this could be a long time if reading a 
+large file.
+
+Flite-1.3.5-current was slightly moddified so that speaking of long texts can 
+be stopped, a stock flite-1.3.x will not return until finished processing. 
+There is a global variable, stopSpeaking, that flite looks for. If 
+stopSpeaking == 'stop' speaking will stop at end of current utterence.
+
+Component use:
+flite = Components.classes["@mozilla.org/Flite;1"].createInstance(Components.intefaces.nsIFlite);
+
+//Test the component. This should say a line of text for each voice
+flite.initFlite();
+
+//Synth text file using default voice:
+flite.sayFile('/path/to/file/file.txt");
+
+//Synth text file using specified voice
+flite.sayFileVoice("/path/to/file.txt", 'voice"); //voice can be rms slt awb kal
+
+//Synth a text string using default voice
+flite.sayThis("Some string of text to speak"); //using default voice
+
+//Synth using specified voice
+flite.sayThisVoice("Some text string", "voice"); // voice can be slt awb rms kal
+
+//Stop Synth at end of current utterence chunk(actualy begining of next utterence chunk).
+flite.unregisterVoice("stop"); //sets the global stopSpeaking variable to stop
+
+//Allow speaking. Sets the stopSpeaking global variable to allow speaking
+flite.allowSpeech("speak');

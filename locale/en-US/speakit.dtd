@@ -1,0 +1,71 @@
+<!--
+//Speakit entity definitions
+//Linspire - Jim Massey MDG 
+-->
+
+<!-- Default Settings -->
+<!ENTITY speak.menu.label        "Read2Me">
+<!ENTITY speak.start.label       "Read Page">
+<!ENTITY speak.entire.tip        "Read whole document">
+<!ENTITY speak.stop.label        "Stop Reading">
+<!ENTITY speak.stop.tip          "Stop reading now">
+<!ENTITY speak.mail.label        "Read Message">
+<!ENTITY speak.button.tip        "Click to read this">
+<!ENTITY speak.selection.label   "Read Selected text">
+<!ENTITY speak.selection.tip     "Read the selected text">
+<!ENTITY speak.prefs.label       "Preferences">
+<!ENTITY speak.prefs.tip         "Read2Me Settings">
+<!ENTITY speak.pause.label       "Pause Speaking">
+<!ENTITY speak.pause.tip         "Paues Flite Speaking">
+
+<!-- labels and tooltips -->
+<!ENTITY speakit.prefGrp.label   "Set read2me preferences:">
+<!ENTITY speakit.prefTree.label  "Read2Me settings">
+<!ENTITY speakit.blocking.label  "Speech blocking:">
+<!ENTITY speakit.blocking.tip    "false is the preferred setting">
+<!ENTITY speakit.App.label       "Application to start:">
+<!ENTITY speakit.App.tip         "Full path to application">
+<!ENTITY speakit.App.Args.label  "Application startup arguments:">
+<!ENTITY speakit.Args.tip        "Commandline style arguments to application">
+<!ENTITY speakit.killall.label   "Stop Argument:">
+<!ENTITY speakit.killall.tip     "Commandline style argument to killall">
+<!ENTITY speakit.Reset.label     "Reset preferences to defaults">
+<!ENTITY speakit.Reset.tip       "Click to set to Linspire defaults">
+<!ENTITY speakit.true.label      "true">
+<!ENTITY speakit.false.label     "false">
+<!ENTITY speakit.showbtn.label   "Show Read2Me Button">
+<!ENTITY speakit.showbtn.tip     "Click to show / hide">
+<!ENTITY speakit.showbtn         "true">
+<!ENTITY speakit.voices.label    "Read2Me voices:">
+<!ENTITY speakit.voices.tip      "Choose a voice from the list">
+<!ENTITY speakit.voicelist.label "Default voice">
+<!ENTITY speakit.testsetup.label "Test voice setup">
+<!ENTITY speakit.testsetup.tip   "Save current setup and speak a test sentence">
+<!ENTITY speakit.soundfixup.label "Fix doubletalk and chipmonk speech">
+<!ENTITY speakit.soundfixup.tip   "check if speech does not seem normal">
+
+<!-- prefs dialog -->
+<!ENTITY speakit.settings.tab.label "Settings">
+<!ENTITY speakit.about.tab.label    "About">
+<!-- prefs dialog expert panel -->
+<!ENTITY speakit.expert.tab.label  "OS defaults">
+<!ENTITY speakit.los.defaults.label "Linspire/freespire defaults">
+<!ENTITY speakit.macosx.defaults.label "MacOSX defaults">
+<!ENTITY speakit.fedora.defaults.label "Fedora Defaults">
+<!ENTITY speakit.expert.storage.path.label "Storage Path">
+<!ENTITY speakit.expert.fesitival.fixup.label "Festival Sound Fixup">
+<!ENTITY speakit.expert.festival.voices.label "Festival Voices list file path">
+<!ENTITY speakit.expert.festival.voices.script.label "Festival Voices script file path">
+<!ENTITY speakit.expert.speech.progam.label "Speech program file path">
+<!ENTITY speakit.expert.temptext.filepath.label "Text to speak file path">
+<!ENTITY speakit.expert.program.stop.label "Speech program to stop">
+<!ENTITY speakit.expert.program.startupargs.label "Speech program startup arguments">
+<!ENTITY speakit.expert.program.name.label "Speech program to Start">
+<!ENTITY speakit.expert.button.show.label "Show or hide Read2me button">
+<!ENTITY speakit.expert.speech.blocking.label "Block during speech">
+ 
+<!-- there are intentional mis-spellings below so that those words are spoken clearly -->
+<!ENTITY speakit.testsetup.txt   "The voice you have picked sounds like this. Reed 2 me can reed web pages and e mails in mozilla based products. Thanks to lin spire for reed 2 me">
+
+<!ENTITY speakit.selection.label "Read2Me button reads selection"> 
+<!ENTITY speakit.selection.tip   "unchecked reads entire page"> 

@@ -1,0 +1,21 @@
+/*
+// *** Copyright (c)2003 Jim Massey. All rights reserved  ***********
+// *** massey@stlouis-shopper.com ************
+// *** No Warranty - certified to work with nothing ***
+// *** developed to work with mozilla kiosk **** 
+*/
+
+xarrowscrollbox {
+	-moz-bindging: url("./xscrollbox.xml#scrollbox");
+/*	-moz-binding: url("xscrollbox.xml#xscrollbox-base");
+*/
+	-moz-binding: url("./xscrollbox.xml#xrepeatbutton");
+	-moz-binding: url("./xscrollbox.xml#autorepeatbutton");
+
+	-moz-binding: url("./xscrollbox.xml#arrowscrollbox");
+
+}
+
+xrepeatbutton {
+		-moz-binding: url("./xscrollbox.xml#xrepeatbutton");
+}

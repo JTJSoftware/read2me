@@ -1,0 +1,70 @@
+/* appStubs stylesheet stub */
+
+@import url("chrome://global/skin");
+
+
+.center-align {
+  padding-top: 5px;
+}
+
+.buttonbox {
+  
+}
+
+#btnbox {
+  padding-top: 0px;
+  margin-bottom: 5px;
+  margin-right: 5px;
+}
+
+#catSpeakitButton {
+  list-style-image: url("chrome://read2me/skin/images/read2me_16x16.png");
+}
+
+#speakit-menu {
+  list-style-image: url("chrome://read2me/skin/images/read2me_32x32.png");
+}
+
+#speakit-menub {
+  list-style-image: url("chrome://read2me/skin/images/read2me_24x24.png");
+}
+
+.speakit-toolbarbutton {
+  list-style-image: url("chrome://read2me/skin/images/read2me_24x24.png");
+}
+
+toolbar[iconsize="small"] #speakit-menub {
+
+  list-style-image: url("chrome://read2me/skin/images/read2me_16x16.png");
+
+}
+
+#kiosk-speakit-menub > button > .button-box {
+  border-style: solid;
+  border-color: red;
+  margin-top: -3px;
+/*
+  list-style-image: url("chrome://read2me/skin/images/read2me_16x16.png");
+*/
+}
+
+/*
+.button-menubutton-button {
+  border-style: solid;
+  border-color: red;
+  margin-top: 0px;
+  color: green;
+}
+*/
+
+/* prefs about page styles */
+
+.read2meHeadline2 {
+  font-weight: bold;
+  font-size: larger;
+}
+
+#contentHolder {
+  overflow: auto;
+}
+

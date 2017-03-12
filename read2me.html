@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="style1.css">
+<meta name="keywords" content="linux, perl, mozilla, kiosk, thin client, software">
+<title>Read2me install</title>
+</head>
+<body bgcolor=white >
+
+<script type="text/javascript">
+
+function xpi_install() {  
+	var xpi={"read2me" : "read2meff3.xpi"};
+  InstallTrigger.install(xpi);
+}
+
+</script>
+
+<div class="instruction-list">
+<center><h3>Read2me installation</h3>
+<b>Read web pages in Firefox and email in Thunderbird</b>
+</center>
+<center>
+  <form action="">
+      <input type="button" onclick="xpi_install();" title="Install this xpi" value="Install read2me.xpi now">
+
+  </form>
+</center>
+
+</div>
+<hr noshade>
+
+
+</body>
+</html>

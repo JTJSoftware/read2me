@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://read2me/skin/speakit.css" type="text/css"?>
+
+<!DOCTYPE page [
+<!ENTITY % speakitDTD SYSTEM "chrome://read2me/locale/about.dtd">
+%speakitDTD;
+]>
+
+
+<page id="aboutRead2Me"
+         xmlns:html="http://www.w3.org/TR/REC-html40"
+	 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+         onload="parent.initPanel('chrome://read2me/content/suite-prefs/about.xul')"
+         headertitle="&read2me.title.label;">
+
+<vbox id="contentHolder" flex="1">
+
+<hbox>
+ <spacer flex="1"/>
+  <image src="&read2me.icon.url;"/>
+ <spacer flex="1"/>
+</hbox>
+
+<seperator/>
+
+<hbox>
+ <spacer flex="1"/>
+ <label value="&read2me.virtues.txt;"/>
+ <spacer flex="1"/>
+</hbox>
+
+<seperator height="10"/>
+
+<vbox>
+ <description width="1">
+     &read2me.description.txt;
+ </description>
+</vbox>
+
+<seperator height="10"/>
+<vbox>
+ <label class="read2meHeadline2" value="&read2me.blockingusage.label;"/>
+ <description width="1">
+     &read2me.blockingusage.txt;
+ </description>
+</vbox>
+
+<seperator height="10"/>
+<vbox>
+ <label class="read2meHeadline2" value="&read2me.voicelist.label;"/>
+ <description width="1">
+     &read2me.voicelist.txt;
+ </description>
+</vbox>
+
+<seperator height="10"/>
+<vbox>
+  <label class="read2meHeadline2" value="&read2me.appstartusage.label;"/>
+  <description width="1">
+      &read2me.appstartusage.txt;
+  </description>
+</vbox>
+
+<seperator height="10"/>
+<vbox>
+  <label class="read2meHeadline2" value="&read2me.appargsusage.label;"/>
+  <description width="1">
+     &read2me.appargsusage.txt;
+  </description>
+</vbox>
+
+<seperator height="10"/>
+<vbox>
+ <label class="read2meHeadline2" value="&read2me.appkillusage.label;"/>
+ <description width="1">
+     &read2me.appkillusage.txt;
+ </description>
+</vbox>
+
+<seperator height="10"/>
+<vbox>
+ <label class="read2meHeadline2" value="&read2me.testsetup.label;"/>
+ <description width="1">
+     &read2me.testsetup.txt;
+ </description>
+</vbox>
+
+<seperator height="10"/>
+<vbox>
+ <label class="read2meHeadline2" value="&read2me.resetbtn.label;"/>
+ <description width="1">
+     &read2me.resetbtn.txt;
+ </description>
+</vbox>
+
+<seperator height="10"/>
+<vbox>
+ <label class="read2meHeadline2" value="&read2me.soundfixup.label;"/>
+ <description width="1">
+     &read2me.soundfixup.txt;
+ </description>
+</vbox>
+
+</vbox>
+
+</page>

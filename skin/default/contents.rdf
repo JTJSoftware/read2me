@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+
+<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:chrome="http://www.mozilla.org/rdf/chrome#"> 
+
+   <RDF:Seq about="urn:mozilla:skin:root">
+     <RDF:li resource="urn:mozilla:skin:read2me"/>
+   </RDF:Seq>
+
+   <RDF:Description about="urn:mozilla:skin:read2me"
+         chrome:displayName="Read2me"
+         chrome:author="Jim Massey"
+	 chrome:description="Read2Me web speech is installed. Read2Me can read webpages and emails. This skin is only for the use of Read2Me."
+         chrome:name="read2me"
+	 chrome:image="images/read2meSShot.png">
+
+     <chrome:packages>
+       <RDF:Seq about="urn:mozilla:skin:read2me:packages">
+         <RDF:li resource="urn:mozilla:skin:read2me:read2me"/>
+       </RDF:Seq>
+        <RDF:Seq about="urn:mozilla:skin:classic/1.0:packages">
+         <RDF:li resource="urn:mozilla:skin:classic/1.0:read2me"/>
+       </RDF:Seq>
+     </chrome:packages>
+   </RDF:Description>
+
+   <RDF:Description chrome:skinVersion="1.5" about="urn:mozilla:skin:read2me:read2me"/>
+  
+     <RDF:Seq about="urn:mozilla:stylesheets">
+        <RDF:li resource="chrome://browser/content/browser.xul"/>
+        <RDF:li resource="chrome://browser/content/preferences/preferences.xul"/>
+        <RDF:li resource="chrome://global/content/customizeToolbar.xul"/>
+        <RDF:li resource="chrome://read2me/content/suite-prefs/speakitPrefsPage.xul"/>
+     </RDF:Seq>
+
+     <RDF:Seq about="chrome://read2me/content/suite-prefs/speakitPrefsPage.xul">
+        <RDF:li>chrome://read2me/skin/speakit.css</RDF:li>
+     </RDF:Seq>
+
+     <RDF:Seq about="chrome://browser/content/browser.xul">
+        <RDF:li>chrome://read2me/skin/speakit.css</RDF:li>
+     </RDF:Seq>
+
+      <RDF:Seq about="chrome://browser/content/preferences/preferences.xul">
+        <RDF:li>chrome://read2me/skin/speakit.css</RDF:li>
+     </RDF:Seq>
+
+     <RDF:Seq about="chrome://global/content/customizeToolbar.xul">
+        <RDF:li>chrome://read2me/skin/speakit.css</RDF:li>
+     </RDF:Seq>
+
+ </RDF:RDF>
+

@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<!--
+#
+# ***** BEGIN LICENSE BLOCK *****
+# Version: MPL 1.1/GPL 2.0/LGPL 2.1
+#
+# The contents of this file are subject to the Mozilla Public License Version
+# 1.1 (the "License"); you may not use this file except in compliance with
+# the License. You may obtain a copy of the License at
+# http://www.mozilla.org/MPL/
+#
+# Software distributed under the License is distributed on an "AS IS" basis,
+# WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+# for the specific language governing rights and limitations under the
+# License.
+#
+# The Original Code is Jim Massey(MDG) - Linspire code.
+#
+# Portions created by the Initial Developer are Copyright (C) 2009
+# the Initial Developer. All Rights Reserved.
+#
+# Contributor(s):
+#
+# Alternatively, the contents of this file may be used under the terms of
+# either of the GNU General Public License Version 2 or later (the "GPL"),
+# or the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+# in which case the provisions of the GPL or the LGPL are applicable instead
+# of those above. If you wish to allow use of your version of this file only
+# under the terms of either the GPL or the LGPL, and not to allow others to
+# use your version of this file under the terms of the MPL, indicate your
+# decision by deleting the provisions above and replace them with the notice
+# and other provisions required by the GPL or the LGPL. If you do not delete
+# the provisions above, a recipient may use your version of this file under
+# the terms of any one of the MPL, the GPL or the LGPL.
+#
+# ***** END LICENSE BLOCK *****
+-->
+
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+<?xml-stylesheet href="chrome://read2me/skin/speakit.css" type="text/css"?>
+
+
+<!DOCTYPE overlay [
+<!ENTITY % speakitDTD SYSTEM "chrome://read2me/locale/speakit.dtd">
+%speakitDTD;
+]>
+
+<overlay id="speakitOverlayFF"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<script type="text/javascript" src="./speakit.js"/>
+<script type="text/javascript" src="./speakitPrefs.js"/>
+<script type="text/javascript" src="./startProc.js"/>
+
+<stringbundleset id="stringbundleset">
+  <stringbundle id="speakitStrings" src="chrome://read2me/locale/speakit.properties"/>
+</stringbundleset>
+
+ <toolbarpalette id="BrowserToolbarPalette">
+  <toolbarbutton id="speakit-menub"
+       type="menu-button"
+       class="toolbarbutton-1 speakit-toolbarbutton chromeclass-toolbar-additional"
+       label="&speak.menu.label;"
+       tooltiptext="&speak.button.tip;"
+       accesskey="r"
+       oncommand="if(event.target == this)read2me();">
+   <menupopup id="speakit-menu-popup">
+     <menuitem id="start-speakitb"
+             label="&speak.start.label;"
+             tooltiptext="&speak.entire.tip;"
+             oncommand="sayPage();"/>
+     <menuitem id="speak-selection"
+               label="&speak.selection.label;"
+               tooltiptext="&speak.selection.tip;"
+               oncommand="saySelection();" />
+     <menuitem id="stop-speakitb"
+             label="&speak.stop.label;"
+             tooltiptext="&speak.stop.tip;"
+             oncommand='kill_process("/usr/bin/killall", "/usr/lib/festival/audsp");'/>
+     <menuitem id="pauseSpeech"
+               label="Pause Speaking"
+               tooltiptext="Paues Flite Speaking"
+               oncommand="pauseSpeechFlite();"/>
+     <menuseparator/>
+
+     <menuitem id="speakit-prefs" 
+               label="&speak.prefs.label;"
+               tooltiptext="&speak.prefs.tip;"
+               oncommand='openDialog("chrome://read2me/content/ff-prefs/speakitPrefsPageDP.xul", "", "")'/>
+<!--
+     <menuitem label="Expert prefs"
+               oncommand='openDialog("chrome://read2me/content/ff-prefs/speakitPrefsWindowDP.xul", "", "chrome");'/>
+-->
+   </menupopup>
+  </toolbarbutton>
+ </toolbarpalette>
+
+</overlay>

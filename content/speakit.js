@@ -1,0 +1,574 @@
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is Jim Massey(MDG) - Linspire code .
+ *
+ * Portions created by the Initial Developer are Copyright (C) 2009
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * either of the GNU General Public License Version 2 or later (the "GPL"),
+ * or the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+ * in which case the provisions of the GPL or the LGPL are applicable instead
+ * of those above. If you wish to allow use of your version of this file only
+ * under the terms of either the GPL or the LGPL, and not to allow others to
+ * use your version of this file under the terms of the MPL, indicate your
+ * decision by deleting the provisions above and replace them with the notice
+ * and other provisions required by the GPL or the LGPL. If you do not delete
+ * the provisions above, a recipient may use your version of this file under
+ * the terms of any one of the MPL, the GPL or the LGPL.
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+
+// *** below is speakit main code 
+// ** copyright 2005 Jim Massey(MDG) Linspire 
+
+window.addEventListener("unload", pageUnload, true);
+window.addEventListener("mouseup", reportSelection, true);
+
+var gnodeList = "";
+var recursionCount = 0;
+
+function reportSelection() {
+//alert("A selection has happened");
+
+  try {
+      var thisWindow = document.commandDispatcher.focusedWindow;
+      var currentSelection = thisWindow.getSelection().toString();
+
+      var currentSelectionB = window.content.getSelection();
+      var selectionText = currentSelectionB.toString();
+      if (currentSelection.length > 0 || selectionText.length > 0 ) {
+          sayWhat = true;
+          document.getElementById("speak-selection").setAttribute('disabled', false);
+          try { 
+             document.getElementById("speak-selection-context").setAttribute('disabled', false);
+          } catch (e) {
+             //do nothing
+          }
+      } else {
+          document.getElementById("speak-selection").setAttribute('disabled', true);
+           try { 
+             document.getElementById("speak-selection-context").setAttribute('disabled', true);
+          } catch (e) {
+             //do nothing
+          }
+      }
+  } catch (e) {
+      //alert("Get Selection failed because: " + e);
+  }
+
+}
+
+function speakitStartup() {
+   var userPrefs = Components.classes["@mozilla.org/preferences;1"].getService(Components.interfaces.nsIPrefBranch);
+   var sayWhat = false;
+
+  try {
+      var showbtn = userPrefs.getBoolPref("speakit.showbtn")
+      document.getElementById("speakit-menu").setAttribute("hidden", showbtn);
+      //alert("set speakit button hidden property: " + showbtn); 
+  } catch (e) {
+      //alert("failed to set speakit button hidden property: " + e); 
+  }
+   
+  try { 
+     sayWhat = userPrefs.getBoolPref("speakit.sayWhat");
+  } catch (e) {
+     //do nothing and use default; 
+  }
+
+  try {
+    document.getElementById("start-speakitb").checked = true;
+  } catch (e) {
+    document.getElementById("speak-selection").checked = true;
+    alert("Speak Selection checked");
+  }
+
+}
+
+function read2me() {
+  var userPrefs = Components.classes["@mozilla.org/preferences;1"].getService(Components.interfaces.nsIPrefBranch);
+  var sayWhat = false;
+
+  try { 
+     sayWhat = userPrefs.getBoolPref("speakit.sayWhat");
+  } catch (e) {
+     //do nothing and use default; 
+  }
+
+  try {
+      var thisWindow = document.commandDispatcher.focusedWindow;
+      var currentSelection = thisWindow.getSelection().toString();
+
+      var currentSelectionB = window.content.getSelection();
+      var selectionText = currentSelectionB.toString();
+      //alert("read2me funct Selection length: " + currentSelection.length);
+      if (currentSelection.length > 0 || selectionText.length > 0 ) {
+	  //alert("read2me funct Selection TRUE length: " + selectionText.length);
+          sayWhat = true;
+          document.getElementById("speak-selection").setAttribute('disabled', false);
+      } else {
+	  //alert("read2me funct Selection FALSE");
+          document.getElementById("speak-selection").setAttribute('disabled', true);
+      }
+  } catch (e) {
+      //alert("Get Selection failed because: " + e);
+  }
+
+  if (sayWhat) {
+      //alert("Say Selection");
+      saySelection();
+  } else {
+      //alert("Say Page");
+      sayPage();
+  }
+
+}
+
+function sayTestSetup(testString) {
+    dump("sayTestSetup " + document.getElementById("speakitApp").value + "\n");
+    if (speachStarted == 1) {
+          flite.unregisterVoice(stop);
+          dump("sayTestSetup - flite currently speaking\n");
+          return;
+    }
+
+  var userPrefs = Components.classes["@mozilla.org/preferences;1"].getService(Components.interfaces.nsIPrefBranch);
+
+  try {
+      if (document.getElementById("speakitApp").value == "Flite") {
+	  var currentVoice = document.getElementById("speakitVoices").value;
+	  //startSayThisFlite(testString, "awb");
+	  startSayThisFlite(testString, currentVoice);
+	  dump("In sayTestSetup Flite: " + currentVoice + "\n");
+	  return;
+      }
+    var tempVoice = document.getElementById("speakitVoices").value;
+    var thisFilepath = determineFilepath();
+    saveSpeakitPrefs();
+    setupScm(thisFilepath);
+    writeFile(thisFilepath, testString);
+
+    // ** Tell init_process we want to use speakit prefs and pass filePath **
+    init_process("speakit", thisFilepath);
+  }catch (e) {
+     alert("Testsetup failed because: " + e);
+  }
+
+}
+
+function saySelection() {
+ try{
+  var currentSelection = window.content.getSelection();
+  var selectionText = currentSelection.toString();
+  //alert("Selection Text: " + selectionText);
+ } catch (e) {
+    alert("Selection Text Failed: " + e);
+ }
+
+  pageUnload();
+  var thisFilepath = determineFilepath();
+  //alert("The textSelection Filepath is: " + thisFilepath);
+  setupScm(thisFilepath);
+  writeFile(thisFilepath, selectionText);
+
+  // ** Tell init_process we want to use speakit prefs and pass filePath **
+  init_process("speakit",thisFilepath);
+
+}
+
+function sayPage() {
+  pageUnload();
+  gnodeList = "";
+  var myNodeList = window.content.document;
+  var filePath = determineFilepath();
+ 
+  setupScm(filePath);
+  countTags(myNodeList);
+  writeFile(filePath, gnodeList);
+  
+  // ** Tell init_process we want to use speakit prefs and pass filePath **
+  init_process("speakit",filePath);
+}
+
+// *** copied from an example(note) at xulplanet
+function writeFile( sFilePath, sFileContent )
+{
+ try
+ {
+  var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+  file.QueryInterface(Components.interfaces.nsIFile);
+  file.initWithPath( sFilePath );
+  if( file.exists() == true ) file.remove( false );
+  var strm = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
+  strm.QueryInterface(Components.interfaces.nsIOutputStream);
+  strm.QueryInterface(Components.interfaces.nsISeekableStream);
+  //strm.init( file, 0x04 | 0x08, 420, 0 );
+  strm.init( file, 0x04 | 0x08, 0666, 0 );
+  strm.write( sFileContent, sFileContent.length );
+  strm.flush();
+  strm.close();
+ }
+ catch(ex)
+ {
+  window.alert("writeFile failure: " + ex.message);
+ }
+}
+
+function countTags(current)
+{
+  var numTags = 0;
+  if (current.nodeType == 3){
+    
+    switch(current.parentNode.nodeName) {
+      case "HEAD":
+        break;
+      case "SCRIPT":
+        break;
+      case "script":
+        break;
+      case "STYLE":
+        break;
+      case "style":
+        dump("Not adding style\n");
+        break;
+      case "NOSCRIPT":
+        break;
+      case "IMG":
+        break;
+     /* case "DIV":
+        //** this case is for testing **
+        var tempVal = current.nodeValue;
+        if (current.nodeValue == null || ! tempVal.match(/[A-Za-z0-9]/)) {
+          break;
+        } else {
+        //gnodeList += current.parentNode.nodeName + current.nodeValue;
+          gnodeList += current.nodeValue + "\n";
+        break;
+        }
+     */  
+      default:
+        var tempVal = current.nodeValue;
+        //if (current.parentNode.nodeName == "A") break;
+        if (current.nodeValue == null || ! tempVal.match(/[A-Za-z0-9]/)) {
+            break;
+        } else {
+            gnodeList += current.nodeValue + "\n";
+            //dump("\nCurrent nodeValue length: " + current.parentNode.nodeName + " :: " + current.nodeValue.length + "\n");
+        }
+    }
+  }
+  var children = current.childNodes;
+  for(var i=0; i < children.length; i++) {
+    countTags(children[i]);
+  }
+  return;
+}
+
+function pageUnload() {
+//the args here will get overwritten from prefs in the kill_process function
+//alert("Page Unloading - Stop talking");
+kill_process("/usr/bin/killall", "/usr/bin/festival");
+}
+
+// Generate festival startup script
+function setupScm(speakFilePath) {
+
+ var setupScm = "";
+ var defaults = document.getElementById("speakitStrings");
+ try {
+       var temp = document.getElementById("speakitStrings").getString("startupProgram");
+       //alert("setupScm got string bundle: " + temp); 
+ } catch (e) {
+       //alert("setupScm Getting string failed because: " + e);
+ }
+ var userPrefs = Components.classes["@mozilla.org/preferences;1"].getService(Components.interfaces.nsIPrefBranch);
+  try {
+     setupScm = userPrefs.getCharPref("speakit.setupScm");
+  } catch (e) {
+     userPrefs.setCharPref("speakit.setupScm", defaults.getString("setupScript"));
+     //userPrefs.setCharPref("speakit.setupScm", "/var/tmp/read2me.scm");
+     setupScm = userPrefs.getCharPref("speakit.setupScm");
+  }
+
+  try {
+     //get and use filepath pref if it is set
+     speakFilePath = userPrefs.getCharPref("speakit.filepath"); 
+  } catch (e) {
+     //do nothing and use hardcoded default
+  }
+
+ try {
+    var soundFixup = userPrefs.getBoolPref("speakit.soundfixup");
+ } catch (e) {
+    var soundFixup = true;
+    userPrefs.setBoolPref("speakit.soundfixup", false);
+ }
+ var fileContent = ";; Read2Me setup\n";
+
+ //setup for doublespeak problem
+ if (soundFixup) {
+   fileContent += "(Parameter.set 'Audio_Method 'Audio_Command)\n";
+   fileContent += "(Parameter.set 'Audio_Command ";
+   fileContent += '"sox -t raw -sw -r $SR $FILE -c2 -t ossdsp /dev/dsp\")\n';
+   fileContent += "(audio_mode 'sync)\n";
+ }
+ try {
+     var setupVoice = userPrefs.getCharPref("speakit.setupVoice");
+     if (setupVoice == "") {
+        // do nothing and use default voice
+     } else {
+        fileContent += "(voice.select '" + setupVoice + ")\n";
+     }
+ } catch (e) {
+     //do mothing
+ }
+
+ fileContent += '(tts_file "' + speakFilePath + '" nil)';
+
+ writeFile(setupScm, fileContent);
+
+}
+
+// Generate festival script to output a file listing the installed voices
+function speakitVoiceList() {
+ //alert("Inside VoiceList");
+ var userPrefs = Components.classes["@mozilla.org/preferences;1"].getService(Components.interfaces.nsIPrefBranch);
+ try {
+     var filePath = userPrefs.getCharPref("speakit.voicescript");
+ } catch (e) {
+     missingPrefs();
+     var filePath = userPrefs.getCharPref("speakit.voicescript");
+ }
+
+ try {
+    var voicelistPath = userPrefs.getCharPref("speakit.voicelist");
+ } catch (e) {
+    missingPrefs();
+    var voicelistPath = userPrefs.getCharPref("speakit.voicelist");
+ } 
+
+ try { 
+    var festivalPath = userPrefs.getCharPref("speakit.festivalpath");
+ } catch (e) {
+    var festivalPath = "/usr/bin/festival";
+    userPrefs.setCharPref("speakit.festivalpath", festivalPath);
+ }
+
+ var fileContent = ";;generate voice listing needed by read2me/speakit\n\n";
+
+ fileContent += "(defun voice-listing() \n";
+//fileContent += '(defvar tmpFile (fopen "/var/tmp/voices-list.txt" "wa")) \n';
+ fileContent += '(defvar tmpFile (fopen "';
+ fileContent += voicelistPath;
+ fileContent += '" "wa")) \n';
+ fileContent += "(defvar i) \n";
+ fileContent += "(set! i 0) \n\n";
+ fileContent += "(while (< i (length(voice.list))) \n";
+ fileContent += "      (format tmpFile (nth i(voice.list))) \n";
+ fileContent += "      (set! i (+ i 1)) \n";
+ fileContent += "      (if (< i (length(voice.list))) \n";
+ fileContent += '        (format tmpFile "\\n") \n';
+ fileContent += "        ;(print (nth ( - i 1)(voice.list))) \n";
+ fileContent += '        (print "end of listings"))) \n \n';
+
+
+ fileContent += "(fclose tmpFile)) \n\n";
+ fileContent += "(voice-listing) \n";
+
+ writeFile(filePath, fileContent);
+ var blockingBool;
+ //init_process(blockingBool, "/usr/bin/festival", "-b", "/var/tmp/voice-list.scm");
+ init_process(blockingBool, festivalPath, "-b", filePath);
+ //readVoiceList();
+
+
+}
+
+function readVoiceList() {
+    //alert("voice list");
+
+var userPrefs = Components.classes["@mozilla.org/preferences;1"].getService(Components.interfaces.nsIPrefBranch);
+
+try {
+  //alert("voice list: " + userPrefs.getCharPref("speakit.appStartup"));
+  // If using Flite get hardcoded voices and return
+  var appStartup = userPrefs.getCharPref("speakit.appStartup");
+  if ( appStartup == "Flite") {
+      fliteVoices();
+      return;
+  }
+} catch (err) {
+    alert("Getting fliteVoices Failed: " + err);
+}
+
+try {
+   userPrefs.getCharPref("speakit.setupVoice");
+} catch (e) {
+   userPrefs.setCharPref("speakit.setupVoice", "");
+   document.getElementById("speakitVoices").selectedIndex = 0;
+}
+
+try {
+var localFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+
+var inputFile = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
+
+var readInputStream = Components.classes["@mozilla.org/scriptableinputstream;1"].createInstance(Components.interfaces.nsIScriptableInputStream);
+
+var voicelistPath = userPrefs.getCharPref("speakit.voicelist");
+ //localFile.initWithPath("/var/tmp/voices-list.txt");
+ localFile.initWithPath(voicelistPath);
+
+ var tmp;
+ inputFile.init(localFile, 0x01, 444, tmp);
+ readInputStream.init(inputFile);
+ var fileStream = readInputStream.read(-1);
+
+ inputFile.close();
+ readInputStream.close();
+
+ var voiceCount = fileStream.split(/\s+/);
+ for(var i = 0; i < voiceCount.length; i++) {
+   //alert(voiceCount.length + "voice list: " + i + " :: " + voiceCount[i]);
+   var voiceAlias = lookupVoiceAlias(voiceCount[i]);
+   document.getElementById("speakitVoices").appendItem(voiceAlias,voiceCount[i]).setAttribute("tooltiptext", voiceCount[i]);
+   if (userPrefs.getCharPref("speakit.setupVoice") ==  voiceCount[i]) {
+      //alert("The Voices are equal: " + i);
+      document.getElementById("speakitVoices").selectedIndex = i;
+   } else {
+      //alert("The Voices never matched: " + userPrefs.getCharPref("speakit.setupVoice"));
+   }
+ }
+
+ if (userPrefs.getCharPref("speakit.setupVoice") == "") {
+   document.getElementById("speakitVoices").selectedIndex = 0;
+   //alert("Voice is empty");
+ }
+
+} catch (e) {
+  if (recursionCount < 5) {
+     setTimeout("readVoiceList()", 5000);
+  }
+  //alert("Failed to read voices.list because: " + e);
+  recursionCount++;
+  dump("Failed to read voices.list because: " + recursionCount + "\n");
+  //readVoiceList();
+  //document.getElementById("speakitVoices").selectedIndex = 1;
+}
+
+
+}
+
+function fliteVoices()
+{
+ try {
+
+    dump("Flite Voices\n");
+    var userPrefs = Components.classes["@mozilla.org/preferences;1"]
+                              .getService(Components.interfaces.nsIPrefBranch);
+
+    var fliteVoices = ["awb", "slt", "rms", "kal"];
+    var voice = "";
+    var i = 0;
+    var selectedVoice = 0;
+    var setupVoice = userPrefs.getCharPref("speakit.setupVoice");
+
+    document.getElementById("speakitVoices").selectedIndex = 0;
+
+    for each (var voice in fliteVoices){   
+       document.getElementById("speakitVoices")
+	   .appendItem(fliteVoices[i],fliteVoices[i]);
+       if (fliteVoices[i] == setupVoice) {
+           document.getElementById("speakitVoices").selectedIndex = i;
+       }
+       i++;
+    }
+
+    return;
+
+ } catch (err) {
+     alert("Flite Voices failed because: " + err);
+ }
+
+}
+
+
+function determineFilepath() {
+  var userPrefs = Components.classes["@mozilla.org/preferences;1"].getService(Components.interfaces.nsIPrefBranch);
+  var tempFile = "no";
+  var filePath = "/var/tmp/speakit.txt";
+
+  try {
+     var storagePath = userPrefs.getCharPref("speakit.storagePath");
+  } catch (e) {
+     missingPrefs();
+     var storagePath = userPrefs.getCharPref("speakit.storagePath");
+  }
+
+  try {
+     //get and use filepath pref if it is set
+     var userPrefs = Components.classes["@mozilla.org/preferences;1"].getService(Components.interfaces.nsIPrefBranch);
+     filePath = userPrefs.getCharPref("speakit.filepath"); 
+     tempFile = "yes";
+  } catch (e) {
+     //do nothing and use hardcoded default
+     //alert("speakit default filePath set for prefs failed: " + e );
+  }
+
+ if (tempFile == "no") {
+/*  try{
+   var userEnvironment = Components.classes["@mozilla.org/process/util;1"].createInstance(Components.interfaces.nsIProcess);
+     //in newer moz versions there is nsIEnvironment 
+     // @mozilla.org/process/environment;1 getService
+     //that I think replaces process.getEnvironment()
+     var userName = userEnvironment.getEnvironment("USER");
+     //filePath = "/var/tmp/" + userName + "-speakit.txt";
+     filePath = storagePath + userName + "-speakit.txt";
+     userPrefs.setCharPref("speakit.filePath", filePath);
+     //alert("UserName is: " + userName + " :: " + filePath);
+  } catch (e) {
+     //alert("1.6 Failed because: " + e);
+  }
+*/
+  try{
+     var userEnvironment = Components.classes["@mozilla.org/process/environment;1"].getService(Components.interfaces.nsIEnvironment);
+     var userName = userEnvironment.get("USER");
+     //filePath = "/var/tmp/" + userName + "-speakit.txt";
+     filePath = storagePath + userName + "-speakit.txt";
+     //alert("UserName is: " + userName + " :: " + filePath);
+     userPrefs.setCharPref("speakit.filePath", filePath);
+  } catch (e) {
+     //alert("firefox Failed because: " + e);
+  }
+ }
+
+return filePath;
+}
+
+function lookupVoiceAlias(voice) {
+//Just see if we have an voice alias in speakit.properties
+
+ try{
+  var voiceAlias = document.getElementById("speakitStrings").getString(voice);
+ } catch (e) {
+  voiceAlias = voice;
+ }
+
+  return voiceAlias;
+
+}

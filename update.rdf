@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<r:RDF xmlns:r="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+       xmlns="http://www.mozilla.org/2004/em-rdf#">
+<!-- Foo Widget Extension -->
+<r:Description about="urn:mozilla:extension:read2me@read2me.com">
+  <updates>
+    <r:Seq>
+      <r:li>
+        <r:Description>
+          <version>1.8.8</version>
+          <!-- Firefox -->
+          <targetApplication>
+            <r:Description>
+              <id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</id>
+              <minVersion>0.8</minVersion>
+              <maxVersion>3.1.*</maxVersion>
+              <updateLink>http://downloads.mozdev.oreg/read2me/read2meff3.xpi</updateLink>
+            </r:Description>
+          </targetApplication>
+          <!-- Thunderbird -->
+          <targetApplication>
+            <r:Description>
+              <id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</id>
+              <minVersion>0.8</minVersion>
+              <maxVersion>2.0+</maxVersion>
+              <updateLink>http://downloads.mozdev.org/read2me/read2meff3.xpi</updateLink>
+            </r:Description>
+          </targetApplication>
+        </r:Description>
+      </r:li>
+    </r:Seq>
+  </updates>
+  <version>1.8.3</version>
+  <updateLink>http://downloads.mozdev.org/read2me/read2meff3.xpi</updateLink>
+</r:Description>
+</r:RDF>
+
+ 

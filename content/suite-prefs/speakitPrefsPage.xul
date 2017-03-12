@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://communicator/skin" type="text/css"?>
+<?xml-stylesheet href="chrome://read2me/skin/speakit.css" type="text/css"?>
+
+
+<!DOCTYPE page [
+<!ENTITY % speakitDTD SYSTEM "chrome://read2me/locale/speakit.dtd">
+%speakitDTD;
+]>
+
+<page id="speakitPrefs"
+         xmlns:html="http://www.w3.org/TR/REC-html40"
+	 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+         onload="parent.initPanel('chrome://read2me/content/suite-prefs/speakitPrefsPage.xul'), speakitPrefsStartup();"
+         headertitle="&speakit.prefTree.label;">
+
+<script type="application/x-javascript" src="chrome://read2me/content/speakitPrefs.js"/>
+<script type="application/x-javascript" src="chrome://read2me/content/speakit.js"/>
+<script type="application/x-javascript" src="chrome://read2me/content/startProc.js"/>
+
+<stringbundleset id="stringbundleset">
+  <stringbundle id="speakitStrings" src="chrome://read2me/locale/speakit.properties"/>
+</stringbundleset>
+
+<script type="application/x-javascript">
+ <![CDATA[
+    var _elementIDs = ["speakitBlocking",
+                       "speakitVoices",
+                       "speakitApp",
+                       "speakitAppArgs",
+                       "speakitAppKillArgs",
+                       "speakitShowBtn",
+                       "speakitSelection",
+                       "speakitSoundFixup"];
+
+]]>
+</script>
+
+ <hbox id="prefsFields" flex="1">
+  <vbox id="prefsFieldsPanel">
+   
+  <groupbox>
+    <caption label="&speakit.prefGrp.label;"/>
+   <hbox>
+     <label value="&speakit.blocking.label;" class="center-align"/>
+     <menulist id="speakitBlocking" 
+               tooltiptext="&speakit.blocking.tip;"
+               preftype="bool"
+               prefstring="speakit.Blocking">
+      <menupopup>
+       <menuitem value="true" label="true"/>
+       <menuitem value="false" label="false"/>
+      </menupopup>
+     </menulist>
+     <spacer flex="1"/>
+   </hbox>
+   <hbox>
+     <label value="&speakit.voices.label;" class="center-align"/>
+     <menulist id="speakitVoices" 
+               label="&speakit.voicelist.label;"
+               tooltiptext="&speakit.voices.tip;"
+               preftype="string"
+               prefstring="speakit.setupVoice">
+      <menupopup> 
+      </menupopup>
+     </menulist>
+     <spacer flex="1"/>
+   </hbox>
+  
+   <hbox>
+     <label value="&speakit.App.label;" class="center-align"/>
+     <textbox id="speakitApp" 
+              tooltiptext="&speakit.App.tip;"
+              prefstring="speakit.appStartup"/>
+   </hbox>
+   <hbox>
+     <label value="&speakit.App.Args.label;" class="center-align"/>
+     <textbox id="speakitAppArgs" 
+              tooltiptext="&speakit.Args.tip;"
+              prefstring="speakit.appStartup.args"/>
+   </hbox>
+   <hbox>
+     <label value="&speakit.killall.label;" class="center-align"/>
+     <textbox id="speakitAppKillArgs" 
+              tooltiptext="&speakit.killall.tip;"
+              prefstring="speakit.appKillall"/>
+   </hbox>
+<!--
+   <hbox>
+     <spacer flex="1"/>
+     <button id="speakitShowBtn"
+             label="&speakit.showbtn.label;"
+             tooltiptext="&speakit.showbtn.tip;"
+             oncommand="speakitButtonShow();"
+             prefstring="speakit.showbtn"/>
+     <spacer flex="1"/>
+   </hbox>
+-->
+   <checkbox id="speakitShowBtn"
+             label="&speakit.showbtn.label;"
+             checked="false"
+             tooltiptext="&speakit.showbtn.tip;"
+             oncommand="speakitButtonShow();"
+             prefstring="speakit.showbtn"/>
+   <checkbox id="speakitSelection"
+             checked="false"
+             label="&speakit.selection.label;"
+             tooltiptext="&speakit.selection.tip;"
+             prefstring="speakit.sayWhat"/>
+   <checkbox id="speakitSoundFixup"
+             label="&speakit.soundfixup.label;"
+             tooltiptext="&speakit.soundfixup.tip;"
+             checked="false"
+             prefstring="speakit.soundfixup"/>
+   </groupbox>
+   <groupbox class="buttonbox">
+   <hbox>
+     <spacer flex="1"/>
+     <button id="speakitPrefsReset" 
+             checked="false" 
+             label="&speakit.Reset.label;"
+             tooltiptext="&speakit.Reset.tip;"
+             oncommand="resetPrefs();"/>
+     <button label="&speakit.testsetup.label;"
+             tooltiptext="&speakit.testsetup.tip;"
+             oncommand='sayTestSetup("&speakit.testsetup.txt;");'/>
+     <spacer flex="1"/>
+   </hbox>
+   </groupbox>
+  </vbox>
+ </hbox>
+
+</page>

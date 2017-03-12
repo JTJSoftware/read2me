@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+
+<window id="speakBox"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        title="Flite speech box"
+        onload="speakFile();">
+
+
+<script type="text/javascript">
+
+// Threaded global interfaces
+ var background = Components.classes["@mozilla.org/thread-manager;1"].getService().newThread(0);
+ var main = Components.classes["@mozilla.org/thread-manager;1"].getService().mainThread;
+var currentThread;
+var flite = Components.classes["@mozilla.org/Flite;1"].createInstance(Components.interfaces.nsIFlite);
+
+  function speakFile()
+  {
+     var flite = Components.classes["@mozilla.org/Flite;1"].createInstance(Components.interfaces.nsIFlite);
+	//flite.initFlite();
+	//flite.sayFile("/var/tmp/massey-speakit.txt");
+        startFlite("/var/tmp/massey-speakit.txt");
+        //window.close();
+  }
+
+function startFlite(speakFile)
+{
+
+   currentThread = background.dispatch(new workingThread(1, speakFile), background.DISPATCH_NORMAL);
+}
+
+
+var workingThread = function(threadID, number) {
+  this.threadID = threadID;
+  this.speakFile = number;
+  this.result = 0;
+};
+
+workingThread.prototype = {
+  run: function() {
+    try {
+      // This is where the working thread does its processing work.
+	dump("workingThread enter speakit file: "+ this.speakFile + "\n");
+     //main.dispatch(new mainThread(this.threadID, this.result),
+       // background.DISPATCH_NORMAL);
+
+	var fileConstruct = Components.Constructor("@mozilla.org/file/local;1", "nsILocalFile");
+	var filePath = new fileConstruct();
+	//var flite = Components.classes["@mozilla.org/Flite;1"].createInstance(Components.interfaces.nsIFlite);
+	//flite.initFlite();
+	flite.sayFile(this.speakFile);
+      
+      // When it's done, call back to the main thread to let it know
+      // we're finished.
+      
+      main.dispatch(new mainThread(this.threadID, this.result),
+        background.DISPATCH_NORMAL);
+    } catch(err) {
+      Components.utils.reportError(err);
+    }
+  },
+  
+  QueryInterface: function(iid) {
+    if (iid.equals(Components.interfaces.nsIRunnable) ||
+        iid.equals(Components.interfaces.nsISupports)) {
+            return this;
+    }
+    throw Components.results.NS_ERROR_NO_INTERFACE;
+    }
+};
+
+
+var mainThread = function(threadID, result) {
+  this.threadID = threadID;
+  this.result = result;
+};
+
+mainThread.prototype = {
+  run: function() {
+    try {
+      // This is where we react to the completion of the working thread.
+      //alert('Thread ' + this.threadID + ' finished with result: ' + this.result);
+/*
+      for each(var Attr in background) {
+        dump("**Background is: " + Attr + "\n");
+      }
+*/
+      //background.shutdown();
+      //currentThread.shutdown();
+    } catch(err) {
+      Components.utils.reportError(err);
+    }
+  },
+  
+  QueryInterface: function(iid) {
+    if (iid.equals(Components.interfaces.nsIRunnable) ||
+        iid.equals(Components.interfaces.nsISupports)) {
+            return this;
+    }
+    throw Components.results.NS_ERROR_NO_INTERFACE;
+  }
+};
+
+function stopTalking()
+{
+    flite.unregisterVoice("stop");
+}
+
+</script>
+<button label="Stop Speech" oncommand="stopTalking();"/>
+</window>

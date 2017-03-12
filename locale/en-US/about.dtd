@@ -1,0 +1,31 @@
+<!-- Read2Me entities -->
+
+<!ENTITY read2me.icon.url         "chrome://read2me/skin/images/read2me_32x32.png">
+<!ENTITY read2me.title.label      "About Read2Me">
+<!ENTITY read2me.virtues.txt      "Webpage and email to Speech">
+<!ENTITY read2me.description.txt  "Read2Me is an extension for mozilla based applications that enables text to speech capibilities. Read2Me requires an external text-to-speech program and has been tested with the Festival speech engine on the Linspire5.0 operating system. Also tested on firefox 1.5 and 2.0.x versions on fedora and macOSX10.4.x Below is a brief description of the different configuration settings you can adjust for Read2Me."> 
+
+<!ENTITY read2me.blockingusage.label  "Speech Blocking:">
+<!ENTITY read2me.blockingusage.txt    "This option will make you wait until the speech has completed before you can do anything in your browser. It is best to leave this feature set to &#34;false&#34;.">
+
+<!ENTITY read2me.voicelist.label     "Read2Me voices:">
+<!ENTITY read2me.voicelist.txt       "Read2Me can use different voices for reading text.  Select the voice you would like to use.">
+
+<!ENTITY read2me.appstartusage.label  "Application to start:">
+<!ENTITY read2me.appstartusage.txt    "Enter in the full path of the application that converts text to speech.">
+
+<!ENTITY read2me.appargsusage.label   "Application startup arguments:">
+<!ENTITY read2me.appargsusage.txt     "Enter in any command line arguments that are required for your text to speech program.">
+
+<!ENTITY read2me.appkillusage.label   "Stop argument:">
+<!ENTITY read2me.appkillusage.txt     "Enter the command line argument to terminate the speaking before the text has been completely read.">
+
+<!ENTITY read2me.testsetup.label      "Test Voice Setup button:">
+<!ENTITY read2me.testsetup.txt        "This button will save the current settings and test the text to speech functionality.">
+
+<!ENTITY read2me.resetbtn.label       "Reset Preferences to default:">
+<!ENTITY read2me.resetbtn.txt         "This button will reset the settings back to &#34;factory&#34; default settings.">
+
+<!ENTITY read2me.soundfixup.label     "Fix Double-talk and Chipmonk Speak:">
+<!ENTITY read2me.soundfixup.txt       "This setting will filter the speech output to reduce &#34;double-talk&#34; or &#34;chipmunk&#34; effects that may happen.  The double-talk effect is when Read2Me keeps saying two words at the same time, creating a delayed echo effect. The chipmunk effect is when the speech sounds like a recording that is being played too fast.">
+

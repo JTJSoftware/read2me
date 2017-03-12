@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+
+<?xml-stylesheet href="chrome://read2me/skin/speakit.css" type="text/css"?>
+
+
+<!DOCTYPE overlay [
+<!ENTITY % speakitDTD SYSTEM "chrome://read2me/locale/speakit.dtd">
+%speakitDTD;
+]>
+
+<overlay id="speakitOverlayFF"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<window id="main-window">
+<script type="text/javascript" src="./speakit.js"/>
+<script type="text/javascript" src="./speakitPrefs.js"/>
+<script type="text/javascript" src="./startProc.js"/>
+<script type="text/javascript">
+var consoleService = Components.classes["@mozilla.org/consoleservice;1"]
+                                 .getService(Components.interfaces.nsIConsoleService);
+consoleService.logStringMessage("Speakit Overlay loaded");
+  kioskUseFlite();
+</script>
+
+<stringbundleset id="stringbundleset">
+  <stringbundle id="speakitStrings" src="chrome://read2me/locale/speakit.properties"/>
+</stringbundleset>
+</window>
+
+ <hbox id="tool-bar">
+  <button id="kiosk-speakit-menub"
+       type="menu-button"
+       class="toolbarbutton-1 kiosk-speakit-toolbarbutton chromeclass-toolbar-additional"
+       label="&speak.menu.label;"
+       tooltiptext="&speak.button.tip;"
+       accesskey="r"
+       oncommand="if(event.target == this)read2me();">
+   <menupopup id="speakit-menu-popup">
+     <menuitem id="start-speakitb"
+             label="&speak.start.label;"
+             tooltiptext="&speak.entire.tip;"
+             oncommand="sayPage();"/>
+     <menuitem id="speak-selection"
+               label="&speak.selection.label;"
+               tooltiptext="&speak.selection.tip;"
+               oncommand="saySelection();" />
+     <menuitem id="stop-speakitb"
+             label="&speak.stop.label;"
+             tooltiptext="&speak.stop.tip;"
+             oncommand='kill_process("/usr/bin/killall", "/usr/lib/festival/audsp");'/>
+     <menuitem id="pauseSpeech"
+               type="checkbox"
+               checked="false"
+               speechPaused="speak"
+               label="&speak.pause.label;"
+               tooltiptext="&speak.pause.tip;"
+               oncommand="pauseSpeechFlite();"/>
+     <menuseparator/>
+<!--
+     <menuitem id="speakit-prefs" 
+               label="&speak.prefs.label;"
+               tooltiptext="&speak.prefs.tip;"
+               oncommand='openDialog("chrome://read2me/content/ff-prefs/speakitPrefsPageDP.xul", "", "")'/>
+-->
+
+<!--
+     <menuitem label="Expert prefs"
+               oncommand='openDialog("chrome://read2me/content/ff-prefs/speakitPrefsWindowDP.xul", "", "chrome");'/>
+-->
+   </menupopup>
+  </button>
+ </hbox>
+
+</overlay>

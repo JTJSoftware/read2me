@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE overlay [
+<!ENTITY % speakitDTD SYSTEM "chrome://read2me/locale/speakit.dtd">
+%speakitDTD;
+]>
+
+<overlay id="speakitPrefsTreeOverlay"
+         xmlns:html="http://www.w3.org/TR/REC-html40"
+	 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<!-- suite overlay -->
+<treechildren id="panelChildren"> 
+  <treeitem id="speakitPrefs" container="true" position="6">
+    <treerow>
+      <treecell url="chrome://read2me/content/suite-prefs/about.xul" label="&speak.menu.label;"/> 
+    </treerow>
+
+    <treechildren>
+      <treeitem>
+       <treerow>
+        <treecell url="chrome://read2me/content/suite-prefs/speakitPrefsPage.xul" label="&speakit.prefTree.label;"/> 
+       </treerow>
+      </treeitem>
+    </treechildren>
+
+  </treeitem>
+</treechildren>
+
+</overlay>

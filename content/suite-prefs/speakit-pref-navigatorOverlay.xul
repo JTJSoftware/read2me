@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE overlay [
+<!ENTITY % speakitDTD SYSTEM "chrome://read2me/locale/speakit.dtd">
+%speakitDTD;
+]>
+
+<overlay id="speakitPrefsNavigatorOverlay"
+         xmlns:html="http://www.w3.org/TR/REC-html40"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"> 
+
+<page id="pref-navigator"
+      onload="parent.initPanel('chrome://read2me/content/speakit-pref-navigatorOverlay.xul');">
+  <script type="application/x-javascript">
+    <![CDATA[ 
+        
+       
+    ]]>
+  </script>
+
+</page>
+
+<vbox id="prefShowButtonsBox1">
+
+   <checkbox id="speakitShowBtn"
+             label="&speak.menu.label;"
+             prefstring="speakit.showBtn"/>
+</vbox>
+
+
+</overlay>
